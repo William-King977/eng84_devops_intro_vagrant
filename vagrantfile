@@ -1,16 +1,12 @@
-
-
 Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/xenial64"
+  # creating a virtual machine ubuntu
 
-  config.vm.provider "virtualbox" do |v|
-    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    v.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-  end
+  # Linux ubuntu 16.-04 box
+  # Let's attach private network with IP
+  config.vm.network "private_network", ip: "192.168.10.100"
 
- config.vm.box = "ubuntu/xenial64"
-# creating a virtual machine ubuntu 
-
- 
-
+  # Creating an alias to link this IP with a logical web address
+  config.hostsupdater.aliases = ["development.local"]
 
 end
