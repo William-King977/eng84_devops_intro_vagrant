@@ -35,6 +35,7 @@
 * Countinuous Deployment
 * Countinuous Monitoring
 
+# Vagrant and Linux
 ## Vagrant commands
 * `vagrant up` - to start-up a virtual machine (VM)
 * `vagrant destroy` - to destroy the VM
@@ -63,11 +64,14 @@
 * `cp my_file devops/my_file` - copies "my_file" into "devops" folder
 * `mv file_name devops/` - moves "file_name" into "devops" folder
 * `chmod +rwx filename`
-  * + means add permission
-  * - takes away the permission
-  * r - read
-  * w - write
-  * x - execute
+  * `+` - means add permission
+  * `-` - takes away the permission
+  * `r` - read
+  * `w` - write
+  * `x` - execute
 * `ll` - check current permission(s)
 * `top` - check current process
 * `ps`, `ps aux` - check process
+
+* `sudo apt-get install nginx` - install web server called NGINX
+* `systemctl status nginx` - check if NGINX is installed
