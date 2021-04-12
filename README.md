@@ -50,19 +50,25 @@
 * `uname` - username in VM
 * `ls` - list files/folders in current directory
 * `ls -a` - list all directories
-* `mkdir` - make a new directory, folder.
-* `nano file_name` - create a file and edit it
-* `touch file_name` - create an empty file
-* `sudo` - used to run commands as an admin
-* `sudo su` - go into dmin mode
 * `cd ..` - go back a single directory
 * `pwd` - current directory
 * update command `sudo apt-get update -y` or `sudo apt-get upgrade -y` 
 * `clear` - to clear screen/terminal
+* `top` - check current process
+* `ps`, `ps aux` - check process
+
+### File handling
+* `mkdir` - make a new directory, folder.
+* `nano file_name` - create a file and edit it
+* `touch file_name` - create an empty file
 * `mv old_file new_file` - renaming a file named "old_file" to "new_file"
 * `rm file_name` - deletes a file named "file_name"
 * `cp my_file devops/my_file` - copies "my_file" into "devops" folder
 * `mv file_name devops/` - moves "file_name" into "devops" folder
+
+### Permissions
+* `sudo` - used to run commands as an admin
+* `sudo su` - go into admin mode
 * `chmod +rwx filename`
   * `+` - means add permission
   * `-` - takes away the permission
@@ -70,8 +76,7 @@
   * `w` - write
   * `x` - execute
 * `ll` - check current permission(s)
-* `top` - check current process
-* `ps`, `ps aux` - check process
 
+### NginX
 * `sudo apt-get install nginx` - install web server called NGINX
 * `systemctl status nginx` - check if NGINX is installed
