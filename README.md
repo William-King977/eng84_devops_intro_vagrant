@@ -78,18 +78,59 @@
   * `x` - execute
 * `ll` - check current permission(s)
 
-## Running and passing tests on host machine by installing required dependencies
-* Change file location to `environment/test` ... more?
-* `branch` on host machine
-* `rack spec` on host to run tests
+## Running tests
+On the host machine, do the following:
+* Change file location to `environment/spec-tests`
+* Execute `gem install bundler:2.2.9`
+* Execute `bundle`
+* Then use `rack spec` to run the tests
+* Note: `rack spec` can be used to run tests in other folders
 
-## Automate the installation of required dependencies in our Vagrant file to run our script
-* add shell script path to our Vagrantfile
-* `config.vm.provision "shell", path: "environment/provision.sh"`
 
-* Creating the script (provision.sh)
+## Multi-machine Vagrant with DB
+Before doing any of these instructions, one must complete the previous section first to enable testing (Running tests).
+
+### Create a Vagrant file
+First, one must create a Vagrantfile with the following contents. As shown below, a virtual machine is configured for both the app and database using `config.vm.define`. Each one has a respective provision file, which holds commands that will execute as the virtual machine is being created. The OS inside both machines is Linux.
 ```
-provision.sh
+# Install the required plugins to create alliases
+required_plugins = ["vagrant-hostsupdater"]
+required_plugins.each do |plugin|
+  exec "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+end
+
+Vagrant.configure("2") do |config|
+  # Set the OS to linux
+  config.vm.box = "ubuntu/xenial64"
+
+  # App virtual machine
+  config.vm.define "app" do |app|
+    # Let's attach private network with IP
+    app.vm.network "private_network", ip: "192.168.10.100"
+
+    # Creating an alias to link this IP with a logical web address
+    app.hostsupdater.aliases = ["development.local"]
+
+    # Transfering files/folder data from our OS to VM.
+    # Vagrant has an option os synced_folder
+    app.vm.synced_folder ".", "/home/vagrant/app"
+
+    # Run the shell script from the given location
+    app.vm.provision "shell", path: "environment/provision_app.sh"
+  end
+
+  # Mongo db virtal machine
+  config.vm.define "db" do |db|
+    # Make IP diferent to the app
+    db.vm.network "private_network", ip: "192.168.10.101"
+    db.vm.provision "shell", path: "environment/provision_db.sh"
+  end
+end
+```
+
+### Create `provision_app.sh` for the app
+Inside `provision_app.sh` are the following contents. These commands install the necessary dependencies to run the app virtual machine. If one decides to run the app using `node app.js` and gets an error involving `expresss`, they will need to run `npm install` inside the virtual machine.
+```
 #!/bin/bash
 
 # Run the update command
@@ -109,3 +150,42 @@ sudo apt-get install nodejs -y
 # install npm with pm2 -g
 sudo npm install pm2 -g
 ```
+
+### Create `provision_db.sh` for the database
+Inside `provision_db.sh` are the following contents. These commands install the necessary dependencies to run the database virtual machine. Note that there are commands that are used to specifically install MongoDB version 3.2.20 as well as needing to listen into IP 0.0.0.0 to pass the tests. Also, MongoDB must be initialised inside the virtual machine.
+```
+#!/bin/bash
+
+# Run the update and upgrade commands
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+# Installing MongoDB (version 3.2.20)
+wget -qO - https://www.mongodb.org/static/pgp/server-3.2.asc | sudo apt-key add -
+echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org=3.2.20 mongodb-org-server=3.2.20 mongodb-org-shell=3.2.20 mongodb-org-mongos=3.2.20 mongodb-org-tools=3.2.20
+
+# Setting up MongoDB to run on the VM
+sudo mkdir -p /data/db
+sudo chown -R mongodb:mongodb /var/lib/mongodb
+sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf # Change VM IP to 0.0.0.0
+sudo systemctl enable mongod
+sudo service mongod start
+```
+
+### Running the virtual machines
+First, open two terminals, one for each virtual machine and both must be running as an administrator. Next, ensure that one's file location is the same as their Vagrantfile on both terminals. After that, do the following:
+* Execute `vagrant up app` on one terminal
+* Execute `vagrant up db` on the other terminal
+
+After starting up the virtual machines, one is ready to run the tests.
+
+
+### Running and passing the tests
+Finally, one must pass the tests given. Before running the tests, one must have the two virtual machines running from following the previous section. To run the tests, do the following on a separate terminal on the host machine:
+* Change file location to `tests`
+* Execute `rake spec`
+
+After this, all the tests for both the app and database should pass. There are 18 and 8 tests respectively.
+
