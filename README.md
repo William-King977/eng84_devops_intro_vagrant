@@ -1,9 +1,9 @@
 # Intro to DevOps
 ## What is DevOps?
-* A collaboration of Dvelopment (Dev) and Operations (Ops).
-* A cuture which promotes collaboration between Development and Operations Team to deploy code to production faster in an automated and repeatable way.
+* A collaboration of Development (Dev) and Operations (Ops).
+* A culture which promotes collaboration between Development and Operations Team to deploy code to production faster in an automated and repeatable way.
 * A practice of development and operation engineers taking part together in the whole service lifecycle.
-* An approach through which superior quality software can be devloped quickly and with more reliability.
+* An approach through which superior quality software can be developed quickly and with more reliability.
 * An alignment of development and IT operations with better communication and collaboration.
 
 ## DevOps Value
@@ -29,11 +29,11 @@
 6. Monitor and test everything
 
 ## Stages
-* Countinuous Development
-* Countinuous Testing
-* Countinuous Inegration
-* Countinuous Deployment
-* Countinuous Monitoring
+* Continuous Development
+* Continuous Testing
+* Continuous Integration
+* Continuous Deployment
+* Continuous Monitoring
 
 # Vagrant and Linux
 ## Vagrant commands
@@ -100,7 +100,7 @@ required_plugins.each do |plugin|
 end
 
 Vagrant.configure("2") do |config|
-  # Set the OS to linux
+  # Set the OS to Linux
   config.vm.box = "ubuntu/xenial64"
 
   # App virtual machine
@@ -111,7 +111,7 @@ Vagrant.configure("2") do |config|
     # Creating an alias to link this IP with a logical web address
     app.hostsupdater.aliases = ["development.local"]
 
-    # Transfering files/folder data from our OS to VM.
+    # Transferring files/folder data from our OS to VM.
     # Vagrant has an option os synced_folder
     app.vm.synced_folder ".", "/home/vagrant/app"
 
@@ -119,9 +119,9 @@ Vagrant.configure("2") do |config|
     app.vm.provision "shell", path: "environment/provision_app.sh"
   end
 
-  # Mongo db virtal machine
+  # Mongo db virtual machine
   config.vm.define "db" do |db|
-    # Make IP diferent to the app
+    # Make IP different to the app
     db.vm.network "private_network", ip: "192.168.10.101"
     db.vm.provision "shell", path: "environment/provision_db.sh"
   end
@@ -129,7 +129,7 @@ end
 ```
 
 ### Create `provision_app.sh` for the app
-Inside `provision_app.sh` are the following contents. These commands install the necessary dependencies to run the app virtual machine. If one decides to run the app using `node app.js` and gets an error involving `expresss`, they will need to run `npm install` inside the virtual machine.
+Inside `provision_app.sh` are the following contents. These commands install the necessary dependencies to run the app virtual machine. If one decides to run the app using `node app.js` and gets an error involving `express`, they will need to run `npm install` inside the virtual machine.
 ```
 #!/bin/bash
 
@@ -142,7 +142,7 @@ sudo apt-get upgrade -y
 # Install nginx
 sudo apt-get install nginx -y
 
-# Install nodejs with requored version and dependencies
+# Install nodejs with required version and dependencies
 sudo apt-get install python-software-properties
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt-get install nodejs -y
