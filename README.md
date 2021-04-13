@@ -56,6 +56,7 @@
 * `clear` - to clear screen/terminal
 * `top` - check current process
 * `ps`, `ps aux` - check process
+* `systemctl status nginx` - check if NGINX is installed
 
 ### File handling
 * `mkdir` - make a new directory, folder.
@@ -77,6 +78,34 @@
   * `x` - execute
 * `ll` - check current permission(s)
 
-### NginX
-* `sudo apt-get install nginx` - install web server called NGINX
-* `systemctl status nginx` - check if NGINX is installed
+## Running and passing tests on host machine by installing required dependencies
+* Change file location to `environment/test` ... more?
+* `branch` on host machine
+* `rack spec` on host to run tests
+
+## Automate the installation of required dependencies in our Vagrant file to run our script
+* add shell script path to our Vagrantfile
+* `config.vm.provision "shell", path: "environment/provision.sh"`
+
+* Creating the script (provision.sh)
+```
+provision.sh
+#!/bin/bash
+
+# Run the update command
+sudo apt-get update -y
+
+# Run the upgrade command
+sudo apt-get upgrade -y
+
+# Install nginx
+sudo apt-get install nginx -y
+
+# Install nodejs with requored version and dependencies
+sudo apt-get install python-software-properties
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install nodejs -y
+
+# install npm with pm2 -g
+sudo npm install pm2 -g
+```
