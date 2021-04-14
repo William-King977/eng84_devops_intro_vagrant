@@ -150,7 +150,7 @@ sudo apt-get install python-software-properties
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt-get install nodejs -y
 
-# install npm with pm2 -g
+# Install npm with pm2 -g
 sudo npm install pm2 -g
 ```
 
@@ -193,17 +193,17 @@ After this, all the tests for both the app and database should pass. There are 1
 
 ### Linking the app and database
 Now, it is time to run the app with the database. In `provision_app`, we had added an environment variable that allows the app to connect with the database. Before running the app, one must populate the database first. To populate the database, SSH into the app using `vagrant ssh app` and do the following:
-* Navigate to the `seeds` directory
+* Navigate to the `seeds` directory using `cd app/app/seeds`
 * Execute `node seed.js`
 
 Once the data has been populated, do the following:
-* return to the `app` directory using `cd ..` 
+* Return to the `app` directory using `cd ..` 
 * Execute `node app.js`
 
 If one gets an error involving `express` or other dependencies, they will need to run `npm install` inside the app virtual machine.
 
 ### Viewing the content
-On your host machine, go on a web browser and enter the following URL:
+On the host machine, go on a web browser and enter the following URL:
 * `http://development.local:3000/posts`
 * If development.local does not work: `http://192.168.10.100:3000/posts`
 
@@ -241,5 +241,6 @@ The system default env variables are:
 ### Persistent environment variables
 One of the ways of making the environment variables peristent is to save it into `~/.bashrc` as follows:
 * `echo "export ENV_VAR_NAME=contents" >> ~/.bashrc`
+* An actual example I will need soon: `echo "export DB_HOST=mongodb://192.168.10.101:27017/posts" >> ~/.bashrc`
 
 The above command saves the environment variable at the end of the `~/.bashrc` file.
