@@ -208,7 +208,7 @@ On your host machine, go on a web browser and enter the following URL:
 * If development.local does not work: `http://192.168.10.100:3000/posts`
 
 Now, the web page should display similar contents to the image below:
--- ADD IMAGE --
+![image](https://user-images.githubusercontent.com/44005332/114748220-99984a00-9d49-11eb-8d30-53551640569b.png)
 
 ## Linux variables
 ### Defining variables
