@@ -117,6 +117,9 @@ Vagrant.configure("2") do |config|
 
     # Run the shell script from the given location
     app.vm.provision "shell", path: "environment/provision_app.sh"
+
+    # Environment variable to help connect to the database
+    app.vm.provision "shell", inline: "sudo echo 'export DB_HOST=mongodb://192.168.10.101:27017/posts' >> /etc/profile.d/myvars.sh", run: "always"
   end
 
   # Mongo db virtual machine
@@ -166,10 +169,10 @@ echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" 
 sudo apt-get update
 sudo apt-get install -y mongodb-org=3.2.20 mongodb-org-server=3.2.20 mongodb-org-shell=3.2.20 mongodb-org-mongos=3.2.20 mongodb-org-tools=3.2.20
 
-# Setting up MongoDB to run on the VM
-sudo mkdir -p /data/db
-sudo chown -R mongodb:mongodb /var/lib/mongodb
-sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf # Change VM IP to 0.0.0.0
+# Change VM listener IP to 0.0.0.0
+sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
+
+# Running MongoDB
 sudo systemctl enable mongod
 sudo service mongod start
 ```
@@ -187,5 +190,35 @@ Finally, one must pass the tests given. Before running the tests, one must have 
 * Change file location to `tests`
 * Execute `rake spec`
 
-After this, all the tests for both the app and database should pass. There are 18 and 8 tests respectively.
+After this, all the tests for both the app and database should pass. There are 18 and 8 tests respectively if running on GitBash. On command line, there are 9 and 4 tests respectively.
 
+## Linux variables
+### Defining variables
+To define a variable called `NAME`, do the following WITHOUT any spaces:
+* `NAME="William"`
+
+If there are spaces, Linux will think that `NAME` is a command.
+
+### Output variables
+Use the `echo` command to output the contents of `NAME`. A dollar sign (`$`) must be used as a prefix to access the variable.
+* `echo $NAME`
+
+### Environment variables (env var)
+How can we check the existing env variable in our system:
+* `env`
+* `printenv` - prints the environment variable contents
+
+`export` is the keyword to create an env variable:
+* as key=value, key="some other value"
+* key=value1:value2
+
+The system default env variables are:
+* `USER`
+* `HOME`
+* `PATH`
+* `TERM`
+
+### Persistent environment variables
+One of the ways of making the environment variables peristent is to save it into `~/.bashrc` as follows:
+* `echo "export ENV_NAME='ENV_VARIABLE_CONTENTS'" >> ~/.bashrc`
+The above command saves the environment variable at the end of the `~/.bashrc` file.
