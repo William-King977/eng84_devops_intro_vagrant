@@ -132,7 +132,7 @@ end
 ```
 
 ### Create `provision_app.sh` for the app
-Inside `provision_app.sh` are the following contents. These commands install the necessary dependencies to run the app virtual machine. If one decides to run the app using `node app.js` and gets an error involving `express`, they will need to run `npm install` inside the virtual machine.
+Inside `provision_app.sh` are the following contents. These commands install the necessary dependencies to run the app virtual machine.
 ```
 #!/bin/bash
 
@@ -184,13 +184,31 @@ First, open two terminals, one for each virtual machine and both must be running
 
 After starting up the virtual machines, one is ready to run the tests.
 
-
 ### Running and passing the tests
 Finally, one must pass the tests given. Before running the tests, one must have the two virtual machines running from following the previous section. To run the tests, do the following on a separate terminal on the host machine:
 * Change file location to `tests`
 * Execute `rake spec`
 
 After this, all the tests for both the app and database should pass. There are 18 and 8 tests respectively if running on GitBash. On command line, there are 9 and 4 tests respectively.
+
+### Linking the app and database
+Now, it is time to run the app with the database. In `provision_app`, we had added an environment variable that allows the app to connect with the database. Before running the app, one must populate the database first. To populate the database, SSH into the app using `vagrant ssh app` and do the following:
+* Navigate to the `seeds` directory
+* Execute `node seed.js`
+
+Once the data has been populated, do the following:
+* return to the `app` directory using `cd ..` 
+* Execute `node app.js`
+
+If one gets an error involving `express` or other dependencies, they will need to run `npm install` inside the app virtual machine.
+
+### Viewing the content
+On your host machine, go on a web browser and enter the following URL:
+* `http://development.local:3000/posts`
+* If development.local does not work: `http://192.168.10.100:3000/posts`
+
+Now, the web page should display similar contents to the image below:
+-- ADD IMAGE --
 
 ## Linux variables
 ### Defining variables
@@ -205,11 +223,13 @@ Use the `echo` command to output the contents of `NAME`. A dollar sign (`$`) mus
 
 ### Environment variables (env var)
 How can we check the existing env variable in our system:
-* `env`
-* `printenv` - prints the environment variable contents
+* `env` - displays all existing env variables
+* `printenv` - prints the contents for a single env variable
+* `echo` - can also be used, but the `$` prefix is needed
 
-`export` is the keyword to create an env variable:
-* as key=value, key="some other value"
+`export` is the keyword to create an env variable as:
+* key=value
+* key="some other value"
 * key=value1:value2
 
 The system default env variables are:
@@ -220,5 +240,6 @@ The system default env variables are:
 
 ### Persistent environment variables
 One of the ways of making the environment variables peristent is to save it into `~/.bashrc` as follows:
-* `echo "export ENV_NAME='ENV_VARIABLE_CONTENTS'" >> ~/.bashrc`
+* `echo "export ENV_VAR_NAME=contents" >> ~/.bashrc`
+
 The above command saves the environment variable at the end of the `~/.bashrc` file.

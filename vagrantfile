@@ -5,7 +5,7 @@ required_plugins.each do |plugin|
 end
 
 Vagrant.configure("2") do |config|
-  # Set the OS to linux
+  # Set the OS to Linux
   config.vm.box = "ubuntu/xenial64"
 
   # App virtual machine
@@ -16,17 +16,20 @@ Vagrant.configure("2") do |config|
     # Creating an alias to link this IP with a logical web address
     app.hostsupdater.aliases = ["development.local"]
 
-    # Transfering files/folder data from our OS to VM.
+    # Transferring files/folder data from our OS to VM.
     # Vagrant has an option os synced_folder
     app.vm.synced_folder ".", "/home/vagrant/app"
 
     # Run the shell script from the given location
     app.vm.provision "shell", path: "environment/provision_app.sh"
+
+    # Environment variable to help connect to the database
+    app.vm.provision "shell", inline: "sudo echo 'export DB_HOST=mongodb://192.168.10.101:27017/posts' >> /etc/profile.d/myvars.sh", run: "always"
   end
 
-  # Mongo db virtal machine
+  # Mongo db virtual machine
   config.vm.define "db" do |db|
-  	# Make IP diferent to the app
+  	# Make IP different to the app
   	db.vm.network "private_network", ip: "192.168.10.101"
   	db.vm.provision "shell", path: "environment/provision_db.sh"
   end
