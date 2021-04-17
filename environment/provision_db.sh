@@ -1,4 +1,3 @@
-provision_db.sh
 #!/bin/bash
 
 # Run the update and upgrade commands

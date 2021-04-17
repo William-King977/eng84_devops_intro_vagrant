@@ -244,3 +244,30 @@ One of the ways of making the environment variables peristent is to save it into
 * An actual example I will need soon: `echo "export DB_HOST=mongodb://192.168.10.101:27017/posts" >> ~/.bashrc`
 
 The above command saves the environment variable at the end of the `~/.bashrc` file.
+
+# NGINX
+NGINX is open source software for web servering, revserse proxying, caching, and more. It started out as a web server designed for maximum performance and stability.
+
+In addition to its HTTP server capabilities, it can also function as a proxy server for email and a reverse proxy, and load balancer for HTTP, TCP and UDP servers.
+
+NGINX is commonly used as a reverse proxy and load balancer to manage incoming traffic and distribute it to slower upstream servers - anything from legacy database servers and microservices.
+
+## Benefits of NGINX
+* It's designed for cloud-native architectures, meaning that it can improve the performance of the IT infrastructure.
+* NGINX is multifunctional, meaning that the same tool can be used for reverse proxy, as web server, or its other functions. This minimises the amount of maintenance required.
+* NGINX's software updates with the latest technologies.
+* NGNIX's content cache and reverse proxy are used to reduce load on application servers and make the most effective use of the underlying hardware.
+
+## Reverse proxy with NGINX
+What is the default location of our NGINX file that loads the NGINX page?
+* `cd /etc/nginx/sites-available/`
+* To access it: `nano /etc/nginx/sites-available/default`
+* We need to use the default file in the same location to add our code to use it as our reverse proxy
+
+### What is a reverse proxy?
+A reverse proxy is a server that sits in front of web servers and forwards client requests to those web servers.
+
+### Benefits of reverse proxy
+They are implemented to help increase security, performance, and reliability. Other benefits include:
+* Load balancing - reverse proxy can distribute the requests among a pool of different servers, which are all handling requests for the same website.
+* Protection from attacks - the origin of the servers doesn't need to be revealed to be accessed. If attacked, only the reverse proxy is targeted, not the server itself.
