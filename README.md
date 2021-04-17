@@ -239,7 +239,7 @@ The system default env variables are:
 * `TERM`
 
 ### Persistent environment variables
-One of the ways of making the environment variables peristent is to save it into `~/.bashrc` as follows:
+One of the ways of making the environment variables persistent is to save it into `~/.bashrc` as follows:
 * `echo "export ENV_VAR_NAME=contents" >> ~/.bashrc`
 * An actual example I will need soon: `echo "export DB_HOST=mongodb://192.168.10.101:27017/posts" >> ~/.bashrc`
 
@@ -264,10 +264,10 @@ What is the default location of our NGINX file that loads the NGINX page?
 * To access it: `nano /etc/nginx/sites-available/default`
 * We need to use the default file in the same location to add our code to use it as our reverse proxy
 
-### What is a reverse proxy?
-A reverse proxy is a server that sits in front of web servers and forwards client requests to those web servers.
+### What is a reverse proxy (server)?
+A reverse proxy is a server that sits behind the firewall in a private network and directs client requests to the appropriate backend server. They provide an additional level of abstraction and control to ensure the smooth flow of network traffic between clients and servers.
 
 ### Benefits of reverse proxy
 They are implemented to help increase security, performance, and reliability. Other benefits include:
 * Load balancing - reverse proxy can distribute the requests among a pool of different servers, which are all handling requests for the same website.
-* Protection from attacks - the origin of the servers doesn't need to be revealed to be accessed. If attacked, only the reverse proxy is targeted, not the server itself.
+* Security - the origin of the servers are hidden and this acts as an additional defence against security attacks. It also ensures that multiple servers can be accessed from a single URL.
