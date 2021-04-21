@@ -15,10 +15,10 @@
 
 ## Challenges
 * The four pillars
-  * Ease of use
-  * Flexibility
-  * Robustness
-  * Cost
+  * Ease of use - servers are setup automatically. Accommodates based on the use
+  * Flexibility - can be scaled for small startups to large organisations
+  * Robustness 
+  * Cost - it's pay as you go (cloud services)
 
 ## DevOps Principles
 1. Customer-Centric Action
@@ -205,7 +205,7 @@ If one gets an error involving `express` or other dependencies, they will need t
 ### Viewing the content
 On the host machine, go on a web browser and enter the following URL:
 * `http://development.local:3000/posts`
-* If development.local does not work: `http://192.168.10.100:3000/posts`
+* If development.local does not work, there's an issue with the aliasing. Try the IP: `http://192.168.10.100:3000/posts`
 
 Now, the web page should display similar contents to the image below:
 ![image](https://user-images.githubusercontent.com/44005332/114748220-99984a00-9d49-11eb-8d30-53551640569b.png)
