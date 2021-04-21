@@ -15,10 +15,10 @@
 
 ## Challenges
 * The four pillars
-  * Ease of use - servers are setup automatically. Accommodates based on the use
-  * Flexibility - can be scaled for small startups to large organisations
-  * Robustness 
-  * Cost - it's pay as you go (cloud services)
+  * **Ease of use** - servers are setup automatically. Accommodates based on the use
+  * **Flexibility** - can be scaled for small startups to large organisations
+  * **Robustness**  
+  * **Cost** - it's pay as you go (cloud services)
 
 ## DevOps Principles
 1. Customer-Centric Action
