@@ -15,10 +15,10 @@
 
 ## Challenges
 * The four pillars
-  * **Ease of use** - servers are setup automatically. Accommodates based on the use
-  * **Flexibility** - can be scaled for small startups to large organisations
-  * **Robustness**  
-  * **Cost** - it's pay as you go (cloud services)
+  * **Ease of use** - tools should be simple/easy to use. It's used by other teams!
+  * **Flexibility** - tools built should be flexible to change and up-to-date
+  * **Robustness** - ensure that the applications are always live
+  * **Cost** - cost considerations (switch off servers when not in use etc.)
 
 ## DevOps Principles
 1. Customer-Centric Action
@@ -28,12 +28,23 @@
 5. Work as one team
 6. Monitor and test everything
 
-## Stages
+## DevOps Life Cycle Stages
 * Continuous Development
 * Continuous Testing
 * Continuous Integration
-* Continuous Deployment
+* Continuous Delivery/Deployment
 * Continuous Monitoring
+
+## DevOps helps:
+* Culture
+* People/teams
+* Collaboration
+* Principles
+* Automation tools
+* SDLC
+* System quality
+* Cost efficiency
+* Business value
 
 # Vagrant and Linux
 ## Vagrant commands
