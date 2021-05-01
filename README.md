@@ -16,7 +16,7 @@
 ## Challenges
 * The four pillars
   * **Ease of use** - tools should be simple/easy to use. It's used by other teams!
-  * **Flexibility** - tools built should be flexible to change and up-to-date
+  * **Flexibility** - tools built should be flexible to change and be up-to-date
   * **Robustness** - ensure that the applications are always live
   * **Cost** - cost considerations (switch off servers when not in use etc.)
 
@@ -97,136 +97,11 @@ On the host machine, do the following:
 * Then use `rack spec` to run the tests
 * Note: `rack spec` can be used to run tests in other folders
 
-
-## Multi-machine Vagrant with DB
-Before doing any of these instructions, one must complete the previous section first to enable testing (Running tests).
-
-### Create a Vagrant file
-First, one must create a Vagrantfile with the following contents. As shown below, a virtual machine is configured for both the app and database using `config.vm.define`. Each one has a respective provision file, which holds commands that will execute as the virtual machine is being created. The OS inside both machines is Linux.
-```
-# Install the required plugins to create alliases
-required_plugins = ["vagrant-hostsupdater"]
-required_plugins.each do |plugin|
-  exec "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
-end
-
-Vagrant.configure("2") do |config|
-  # Set the OS to Linux
-  config.vm.box = "ubuntu/xenial64"
-
-  # App virtual machine
-  config.vm.define "app" do |app|
-    # Let's attach private network with IP
-    app.vm.network "private_network", ip: "192.168.10.100"
-
-    # Creating an alias to link this IP with a logical web address
-    app.hostsupdater.aliases = ["development.local"]
-
-    # Transferring files/folder data from our OS to VM.
-    # Vagrant has an option os synced_folder
-    app.vm.synced_folder ".", "/home/vagrant/app"
-
-    # Run the shell script from the given location
-    app.vm.provision "shell", path: "environment/provision_app.sh"
-
-    # Environment variable to help connect to the database
-    app.vm.provision "shell", inline: "sudo echo 'export DB_HOST=mongodb://192.168.10.101:27017/posts' >> /etc/profile.d/myvars.sh", run: "always"
-  end
-
-  # Mongo db virtual machine
-  config.vm.define "db" do |db|
-    # Make IP different to the app
-    db.vm.network "private_network", ip: "192.168.10.101"
-    db.vm.provision "shell", path: "environment/provision_db.sh"
-  end
-end
-```
-
-### Create `provision_app.sh` for the app
-Inside `provision_app.sh` are the following contents. These commands install the necessary dependencies to run the app virtual machine.
-```
-#!/bin/bash
-
-# Run the update command
-sudo apt-get update -y
-
-# Run the upgrade command
-sudo apt-get upgrade -y
-
-# Install nginx
-sudo apt-get install nginx -y
-
-# Install nodejs with required version and dependencies
-sudo apt-get install python-software-properties
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-sudo apt-get install nodejs -y
-
-# Install npm with pm2 -g
-sudo npm install pm2 -g
-```
-
-### Create `provision_db.sh` for the database
-Inside `provision_db.sh` are the following contents. These commands install the necessary dependencies to run the database virtual machine. Note that there are commands that are used to specifically install MongoDB version 3.2.20 as well as needing to listen into IP 0.0.0.0 to pass the tests. Also, MongoDB must be initialised inside the virtual machine.
-```
-#!/bin/bash
-
-# Run the update and upgrade commands
-sudo apt-get update -y
-sudo apt-get upgrade -y
-
-# Installing MongoDB (version 3.2.20)
-wget -qO - https://www.mongodb.org/static/pgp/server-3.2.asc | sudo apt-key add -
-echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
-sudo apt-get update
-sudo apt-get install -y mongodb-org=3.2.20 mongodb-org-server=3.2.20 mongodb-org-shell=3.2.20 mongodb-org-mongos=3.2.20 mongodb-org-tools=3.2.20
-
-# Change VM listener IP to 0.0.0.0
-sudo sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
-
-# Running MongoDB
-sudo systemctl enable mongod
-sudo service mongod start
-```
-
-### Running the virtual machines
-First, open two terminals, one for each virtual machine and both must be running as an administrator. Next, ensure that one's file location is the same as their Vagrantfile on both terminals. After that, do the following:
-* Execute `vagrant up app` on one terminal
-* Execute `vagrant up db` on the other terminal
-
-After starting up the virtual machines, one is ready to run the tests.
-
-### Running and passing the tests
-Finally, one must pass the tests given. Before running the tests, one must have the two virtual machines running from following the previous section. To run the tests, do the following on a separate terminal on the host machine:
-* Change file location to `tests`
-* Execute `rake spec`
-
-After this, all the tests for both the app and database should pass. There are 18 and 8 tests respectively if running on GitBash. On command line, there are 9 and 4 tests respectively.
-
-### Linking the app and database
-Now, it is time to run the app with the database. In `provision_app`, we had added an environment variable that allows the app to connect with the database. Before running the app, one must populate the database first. To populate the database, SSH into the app using `vagrant ssh app` and do the following:
-* Navigate to the `seeds` directory using `cd app/app/seeds`
-* Execute `node seed.js`
-
-Once the data has been populated, do the following:
-* Return to the `app` directory using `cd ..` 
-* Execute `node app.js`
-
-If one gets an error involving `express` or other dependencies, they will need to run `npm install` inside the app virtual machine.
-
-### Viewing the content
-On the host machine, go on a web browser and enter the following URL:
-* `http://development.local:3000/posts`
-* If development.local does not work, there's an issue with the aliasing. Try the IP: `http://192.168.10.100:3000/posts`
-
-Now, the web page should display similar contents to the image below:
-![image](https://user-images.githubusercontent.com/44005332/114748220-99984a00-9d49-11eb-8d30-53551640569b.png)
-
 ## Linux variables
 ### Defining variables
 To define a variable called `NAME`, do the following WITHOUT any spaces:
 * `NAME="William"`
-
-If there are spaces, Linux will think that `NAME` is a command.
+* If there are spaces, Linux will think that `NAME` is a command.
 
 ### Output variables
 Use the `echo` command to output the contents of `NAME`. A dollar sign (`$`) must be used as a prefix to access the variable.
@@ -280,5 +155,5 @@ A reverse proxy is a server that sits behind the firewall in a private network a
 
 ### Benefits of reverse proxy
 They are implemented to help increase security, performance, and reliability. Other benefits include:
-* Load balancing - reverse proxy can distribute the requests among a pool of different servers, which are all handling requests for the same website.
-* Security - the origin of the servers are hidden and this acts as an additional defence against security attacks. It also ensures that multiple servers can be accessed from a single URL.
+* **Load balancing** - reverse proxy can distribute the requests among a pool of different servers, which are all handling requests for the same website.
+* **Security** - the origin of the servers are hidden and this acts as an additional defence against security attacks. It also ensures that multiple servers can be accessed from a single URL.
