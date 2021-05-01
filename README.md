@@ -55,40 +55,6 @@
 * `vagrant ssh` - to SSH into VM
 * `vagrant halt` - to pause the VM
 
-* `apt-get` in Linux is a package manager to install/update like Windows installer, mac app store
-
-## Linux Commands
-* `uname` - username in VM
-* `ls` - list files/folders in current directory
-* `ls -a` - list all directories
-* `cd ..` - go back a single directory
-* `pwd` - current directory
-* update command `sudo apt-get update -y` or `sudo apt-get upgrade -y` 
-* `clear` - to clear screen/terminal
-* `top` - check current process
-* `ps`, `ps aux` - check process
-* `systemctl status nginx` - check if NGINX is installed
-
-### File handling
-* `mkdir` - make a new directory, folder.
-* `nano file_name` - create a file and edit it
-* `touch file_name` - create an empty file
-* `mv old_file new_file` - renaming a file named "old_file" to "new_file"
-* `rm file_name` - deletes a file named "file_name"
-* `cp my_file devops/my_file` - copies "my_file" into "devops" folder
-* `mv file_name devops/` - moves "file_name" into "devops" folder
-
-### Permissions
-* `sudo` - used to run commands as an admin
-* `sudo su` - go into admin mode
-* `chmod +rwx filename`
-  * `+` - means add permission
-  * `-` - takes away the permission
-  * `r` - read
-  * `w` - write
-  * `x` - execute
-* `ll` - check current permission(s)
-
 ## Running tests
 On the host machine, do the following:
 * Change file location to `environment/spec-tests`
