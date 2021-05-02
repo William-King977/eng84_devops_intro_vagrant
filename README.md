@@ -59,9 +59,9 @@
 On the host machine, do the following:
 * Change file location to `environment/spec-tests`
 * Execute `gem install bundler:2.2.9`
-* Execute `bundle`
-* Then use `rack spec` to run the tests
-* Note: `rack spec` can be used to run tests in other folders
+* Execute `bundle init`
+* Then use `rake spec` to run the tests
+* Note: `rake spec` can be used to run tests in other folders
 
 ## Linux variables
 ### Defining variables
