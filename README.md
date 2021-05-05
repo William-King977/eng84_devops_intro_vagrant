@@ -55,14 +55,6 @@
 * `vagrant ssh` - to SSH into VM
 * `vagrant halt` - to pause the VM
 
-## Running tests
-On the host machine, do the following:
-* Change file location to `environment/spec-tests`
-* Execute `gem install bundler:2.2.9`
-* Execute `bundle init`
-* Then use `rake spec` to run the tests
-* Note: `rake spec` can be used to run tests in other folders
-
 ## Linux variables
 ### Defining variables
 To define a variable called `NAME`, do the following WITHOUT any spaces:

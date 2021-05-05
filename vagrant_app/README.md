@@ -88,6 +88,10 @@ sudo systemctl enable mongod
 sudo service mongod start
 ```
 
+## Install Hostsupdater
+* Execute `vagrant plugin install vagrant-hostsupdater --plugin-version=1.0.2` to install the specified version (recommended)
+* Execute `vagrant plugin install vagrant-hostsupdater` to install the latest version
+
 ## Running the virtual machines
 First, open two terminals, one for each virtual machine and both must be running as an administrator. Next, ensure that one's file location is the same as their Vagrantfile on both terminals. After that, do the following:
 * Execute `vagrant up app` on one terminal
@@ -95,12 +99,21 @@ First, open two terminals, one for each virtual machine and both must be running
 
 After starting up the virtual machines, one is ready to run the tests.
 
+### Hostsupdater Bug
+* If running `vagrant up` throws an error, comment out the `private_network` and `.aliases` lines, then run `vagrant up` again
+* After the machine(s) is running, use `vagrant halt`, then uncomment the previously mentioned lines
+* Now, use `vagrant up` and there shouldn't be any issues
+
 ## Running and passing the tests
 Finally, one must pass the tests given. Before running the tests, one must have the two virtual machines running from following the previous section. To run the tests, do the following on a separate terminal on the host machine:
-* Change file location to `tests`
+* Change file location to `environment/spec-tests`
+* Execute `gem install bundler:2.2.9`
+* Execute `bundle init`
+* Execute `rake spec` to run the tests
+* Change file location to `tests` (more tests)
 * Execute `rake spec`
 
-After this, all the tests for both the app and database should pass. There are 18 and 8 tests respectively if running on GitBash. On command line, there are 9 and 4 tests respectively.
+After this, all the tests for both the app and database should pass.
 
 ## Linking the app and database
 Now, it is time to run the app with the database. In `provision_app`, we had added an environment variable that allows the app to connect with the database. Before running the app, one must populate the database first. To populate the database, SSH into the app using `vagrant ssh app` and do the following:
@@ -111,7 +124,7 @@ Once the data has been populated, do the following:
 * Return to the `app` directory using `cd ..` 
 * Execute `node app.js`
 
-If one gets an error involving `express` or other dependencies, they will need to run `npm install` inside the app virtual machine.
+If one gets an error involving `express` or other dependencies, they will need to run `npm install` in the `app/app` directory in the virtual machine.
 
 ## Viewing the content
 On the host machine, go on a web browser and enter the following URL:
